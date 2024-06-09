@@ -14,10 +14,10 @@ We will need the following packages for our setup. Install all of these:
 | ---- | ----- | -------------------- |
 | OpenOCD |  Debug and flash interface for microcontrollers | `sudo apt-get install openocd` |
 | gdb-multiarch |  Version of GDB that enables debugging remote targets with different architectures   | `sudo apt-get install gdb-multiarch` |
-| binutils-multiarch | Dependencies for `gdb-multiarch` | `sudo apt-get install binutils-multiarch`| 
+| binutils-multiarch | Dependencies for using `gdb-multiarch` with Cortex-Debug | `sudo apt-get install binutils-multiarch`| 
 | clangd | Language server for clang compiler, you do not need to install `clang` itself | `sudo apt-get install clangd` |
 
-To make sure our version of GDB uses the multiarch variants of its dependencies, we are going to create symlinks. This is an ugly workaround to [what appears to be a known problem with Cortex-Debug](https://github.com/Marus/cortex-debug/issues/744), but is easy enough and *shouldn't* cause any issues. Create the links with:
+To make sure Cortex-Debug uses the multiarch variants of binutils, we are going to create symlinks. This is an ugly workaround to [what appears to be a known problem with Cortex-Debug](https://github.com/Marus/cortex-debug/issues/744), but is easy enough and *shouldn't* cause any issues. Create the links with:
     <pre>sudo ln -s /usr/bin/nm /usr/bin/nm-multiarch
     sudo ln -s /usr/bin/objdump /usr/bin/objdump-multiarch</pre>
 (`nm` and `objdump` are used to dump symbols and code from binaries, we need the `-multiarch` versions to dump TM4C binaries on our computers).
