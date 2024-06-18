@@ -1,8 +1,8 @@
 # Embedded Development in VS Code: OpenOCD + GDB on the TM4C
 
-Embedded development historically has relied heavily on proprietary software development tools such like Keil which feel bloated and are not always supported on all major operating systems. Open On-Chip Debugger (OpenOCD) and other modern tools allow for more flexible configuration, feel snappier, let us use modern editors with language servers for code completion and syntax highlighting, and are maintained by active communities.
+Embedded development historically has relied heavily on proprietary software development tools like Keil which feel bloated and are not always supported on all major operating systems. Open On-Chip Debugger (OpenOCD) and other modern tools allow for more flexible configuration, feel snappier, are maintained by active communities, and let us use modern editors with language servers for code completion and syntax highlighting.
 
-This guide will walk through the steps necessary to set up VS Code for embedded development on the EK-TM4C123GXL Launchpad development board. I want to stress that it is by no means mandatory that you complete this, and I would suggest only proceeding if you have spare time, are comfortable with the terminal, and would like to learn some new tools. These steps were completed on a fresh install of Ubuntu 24.04, but with minimal tweaks should be doable on macOS and, with WSL, Windows.
+This guide will walk through the steps necessary to set up VS Code for embedded development on the EK-TM4C123GXL Launchpad development board. I want to stress that it is by no means mandatory that you complete this, and I would suggest only proceeding if you have spare time, are comfortable with the terminal, and would like to learn some new tools. These steps were completed on a fresh install of Ubuntu 24.04, but with minimal tweaks should work on macOS and, with WSL, Windows.
 
 The end goal of this guide is to be able to use VS Code to build, flash, and debug our projects for the TM4C. We will still be using a lot of proprietary ARM software within VS Code for building our projects, and we will not be building from scratch with a custom linker script (though that would be another educational project!).
 
@@ -25,10 +25,10 @@ To make sure Cortex-Debug uses the multiarch variants of binutils, we are going 
 
 ## The ARM VS Code Suite
 
-Luckily, ARM provides a VS Code extension pack that enables development for their embedded boards! There is a catch, though. These extensions do not support the *ancient* ICDI interface the Launchpad uses to debug and flash. These extensions also use ARM's newer `csolution` projects as opposed to Keil's uVision projects, but they provide a tool that will seamlessly convert between the two. We will later set up OpenOCD and GDB to flash and debug our devices respectively.
+Luckily, ARM provides a VS Code extension pack that enables development for their embedded boards! There is a catch, though. These extensions do not support the *ancient* ICDI interface the Launchpad uses to debug and flash. These extensions also use ARM's newer `csolution` projects as opposed to Keil's uVision projects, but they provide a tool that will seamlessly convert between the two. We will later set up OpenOCD and GDB to flash and debug our devices, respectively.
 
 1. Install the ARM Keil Studio Pack Extension by ARM in VS Code's extensions marketplace. <p align="center"><img src="img/arm_extension.png"></p>
-2. If on Linux, create a udev rule that allows access to the USB debug device with the following command:
+2. If on Linux, create a udev rule that allows access to the USB debug device with the following command (the vendor and product ID shown are the same for all Launchpads):
    
     `echo 'ATTRS{idVendor}=="1cbe", ATTRS{idProduct}=="00fd", GROUP="users", MODE="0660"' | sudo tee /etc/udev/rules.d/99-stellaris-launchpad.rules`
 
@@ -76,7 +76,7 @@ Cortex-Debug is another powerful extension that will allow us to create a custom
     
 ## [OpenOCD](https://openocd.org/)
 
-The launch configuration we created in the previous step will run OpenOCD to flash and debug our code on its own. In the future, I may add more information to this section about using OpenOCD from the command line yourself to flash, debug, and reset embedded boards. OpenOCD is very powerful, supports many boards, and is super easy to create a board configuration for if needed. The Launchpad already had a configuration; it is the `ti_ek-tm4c123gxl.cfg` referenced in `launch.json` if you want to take a look.
+The launch configuration we created in the previous step will run OpenOCD to flash and debug our code on its own. In the future, I may add more information to this section about using OpenOCD from the command line to flash, debug, and reset embedded boards. OpenOCD is very powerful, supports many boards, and is super easy to create a board configuration for if needed. The Launchpad already had a configuration; it is the `ti_ek-tm4c123gxl.cfg` referenced in `launch.json` if you want to take a look.
 
 ## Code Completion and Syntax Highlighting with Clangd
 
