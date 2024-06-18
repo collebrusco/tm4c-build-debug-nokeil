@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "cwd": "${workspaceRoot}",
+            "executable": "${command:arm-debugger.getApplicationFile}",
+            "name": "Debug with OpenOCD",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "configFiles": ["/usr/share/openocd/scripts/board/ti_ek-tm4c123gxl.cfg"],
+            "openOCDLaunchCommands": [
+                "program ${command:arm-debugger.getApplicationFile} verify"
+            ],
+            "searchDir": [],
+            "runToEntryPoint": "main",
+            "gdbPath": "/usr/bin/gdb-multiarch",
+            "overrideLaunchCommands": [
+                "-enable-pretty-printing"
+            ],
+        },
+        // Uncomment below this line if you want "Flash with OpenOCD" option.
+        // {
+        //     "cwd": "${workspaceRoot}",
+        //     "executable": "${command:arm-debugger.getApplicationFile}",
+        //     "name": "Flash with OpenOCD",
+        //     "preLaunchTask": "Flash Device",
+        //     "request": "launch",
+        //     "type": "cortex-debug",
+        //     "servertype": "openocd",
+        //     "configFiles": ["/usr/share/openocd/scripts/board/ti_ek-tm4c123gxl.cfg"],
+        //     "searchDir": [],
+        //     "gdbPath": "/usr/bin/gdb-multiarch",
+        //     "overrideLaunchCommands": [
+        //         "-enable-pretty-printing"
+        //     ],
+        //     "overrideGDBServerStartedRegex" : "(?s).*"
+        // },
+    ]
+}        

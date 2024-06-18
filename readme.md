@@ -2,7 +2,7 @@
 
 Embedded development historically has relied heavily on proprietary software development tools such like Keil which feel bloated and are not always supported on all major operating systems. Open On-Chip Debugger (OpenOCD) and other modern tools allow for more flexible configuration, feel snappier, let us use modern editors with language servers for code completion and syntax highlighting, and are maintained by active communities.
 
-This guide will walkthrough the steps necessary to set up VS Code for embedded development on the EK-TM4C123GXL Launchpad development board. I want to stress that it is by no means mandatory that you complete this, and I would suggest only proceeding if you have spare time, are proficient with the terminal, and would like to learn some new tools. These steps were completed on a fresh install of Ubuntu 24.04, but with minimal tweaks should be doable on macOS and (with WSL) Windows.
+This guide will walk through the steps necessary to set up VS Code for embedded development on the EK-TM4C123GXL Launchpad development board. I want to stress that it is by no means mandatory that you complete this, and I would suggest only proceeding if you have spare time, are comfortable with the terminal, and would like to learn some new tools. These steps were completed on a fresh install of Ubuntu 24.04, but with minimal tweaks should be doable on macOS and, with WSL, Windows.
 
 The end goal of this guide is to be able to use VS Code to build, flash, and debug our projects for the TM4C. We will still be using a lot of proprietary ARM software within VS Code for building our projects, and we will not be building from scratch with a custom linker script (though that would be another educational project!).
 
@@ -46,9 +46,9 @@ Cortex-Debug is another powerful extension that will allow us to create a custom
 
 1. Install Cortex-Debug by marus25 in VS Code's extension marketplace. <p align="center"><img src="img/cortex-debug_extension.png"></p>
 
-2. Create the `.vscode/` directory in the same directory as `.git` and `cd` into it.
+2. Copy the `.vscode/` directory in this repository into your project at the top level (in the same directory as `.git/`). If `.vscode/` already exists in your project, delete it before copying this in.
 
-3. Here, create `launch.json` with the following contents:
+3. `.vscode/launch.json` has the following contents:
     <pre>{
         "version": "0.2.0",
         "configurations": [
@@ -72,7 +72,7 @@ Cortex-Debug is another powerful extension that will allow us to create a custom
             },
         ]
     }</pre>
-    This stores our configuration settings for the Cortex-Debug extension. With the current steps provided above, you will have to repeat steps 2 and 3 for every new project. [Here is how to make this launch configuration global if you prefer.](https://stackoverflow.com/questions/36868021/is-it-possible-to-have-a-global-launch-json-file) If you see an "Arm Debugger" configuration, you can either delete it or leave it be, but we will not be using it. This debugger only works on newer boards that use ULINK2, ULINKplus, or CMSIS-DAP interfaces (we need the ICDI interface).
+    This stores our configuration settings for the Cortex-Debug extension.
     
 ## [OpenOCD](https://openocd.org/)
 
@@ -92,7 +92,7 @@ Disable IntelliSense.
 
 To be able to flash without debugging, we have to create a custom VS Code task that will run OpenOCD.
 
-In `.vscode/` create `tasks.json` with these contents:
+`.vscode/tasks.json` has these contents (you should have already copied this into your project as instructed above):
 <pre>{
     "version": "2.0.0",
     "tasks": [
@@ -104,7 +104,7 @@ In `.vscode/` create `tasks.json` with these contents:
         },
     ]
 }</pre>
-The run button in CMSIS will now flash the board. [Like with launch configurations, tasks can also be made global if desired.](https://stackoverflow.com/questions/41046494/how-to-create-a-global-tasks-in-vs-code-user-task) If you would also like a menu option in VS Code's Run and Debug tab, add this launch configuration to `launch.json`:
+This will allow us to configure CMSIS to flash the board with the run button. If you would also like a menu option in VS Code's Run and Debug tab, add this launch configuration to `.vscode/launch.json` (this is commented out in this repository, just uncomment if you want this feature):
 <pre>{
     "cwd": "${workspaceRoot}",
     "executable": "${command:arm-debugger.getApplicationFile}",
@@ -122,7 +122,7 @@ The run button in CMSIS will now flash the board. [Like with launch configuratio
     "overrideGDBServerStartedRegex" : "(?s).*"
 },
 </pre>
-This is a somewhat ugly workaround to run a task from this menu, because the `preLaunchTask` runs what we need, and the rest just opens and immedately closes our debugger.
+This is a somewhat ugly workaround to run a task from this menu, because the `preLaunchTask` runs what we need, and the rest just opens and immedately closes our debugger. If you like having this option, remember for every new project you will need to make sure it is in `.vscode/`.
 
 ## Using CMSIS to Build
 

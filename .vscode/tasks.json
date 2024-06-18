@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Flash Device",
+            "type": "shell",
+            "command": "openocd -f /usr/share/openocd/scripts/board/ti_ek-tm4c123gxl.cfg -c \"program ${command:arm-debugger.getApplicationFile} verify reset exit\" || echo Done",
+            "problemMatcher": []
+        },
+    ]
+}
