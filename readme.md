@@ -4,8 +4,38 @@ Embedded development historically has relied heavily on proprietary software dev
 
 This guide will walk through the steps necessary to set up VS Code for embedded development on the EK-TM4C123GXL Launchpad development board. I want to stress that it is by no means mandatory that you complete this, and I would suggest only proceeding if you have spare time, are comfortable with the terminal, and would like to learn some new tools. These steps were completed on a fresh install of Ubuntu 24.04, but with minimal tweaks should work on macOS and, with WSL, Windows.
 
-The end goal of this guide is to be able to use VS Code to build, flash, and debug our projects for the TM4C. We will still be using a lot of proprietary ARM software within VS Code for building our projects, and we will not be building from scratch with a custom linker script (though that would be another educational project!).
+The end goal of this guide is to be able to use VS Code to build, flash, and debug our projects for the TM4C. We will still be using a lot of proprietary ARM software within VS Code for building our projects, and we will not be building from scratch with a custom linker script (though that would be another educational project!).        
 
+       
+
+# This is gonna be different on macos. notes:
+https://github.com/bminor/binutils-gdb
+
+some homebrew installs
+```bash
+brew install openocd.
+brew install gmp
+brew install mpfr
+```
+     
+clone gdb source. make object dir and run configure from it. we'll be needing some options
+```bash
+git clone https://github.com/bminor/binutils-gdb
+cd binutils-gdb
+mkdir objdir
+cd objdir
+../configure --enable-targets=all --with-python --enable-tui --with-gmp=/opt/homebrew/Cellar/gmp/6.3.0/ --with-mpfr=/opt/homebrew/Cellar/mpfr/4.2.1/
+```
+we specify to install for all architectures.    
+likely you'll need to tell gdb where to find gmp and mpfr. !!Your version may be different!!    
+now
+```bash
+make -j<num cores to use>
+make install # copies the programs files into /usr/local/bin
+```
+            
+         
+# back to it:
 ## Miscellaneous Packages
 
 We will need the following packages for our setup. Install all of these:
